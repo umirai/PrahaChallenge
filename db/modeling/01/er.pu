@@ -9,6 +9,14 @@ entity "menus" {
   value
   # price_id [FK]
   available_takeout
+  is_combination_plate
+}
+
+entity "combination_menus" {
+  # parent_menu_id [FK]
+  # child_menu_id [FK]
+  --
+  quantity
 }
 
 entity "prices" {
@@ -64,4 +72,5 @@ menus }|-l-|| prices
 campaign ..|{ campaign_details
 menus .l.o| campaign_details
 orders .l.o{ campaign
+menus }.d.o{ combination_menus
 @enduml
