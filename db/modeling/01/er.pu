@@ -1,0 +1,76 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+entity "menus" {
+  + id [PK]
+  --
+  value
+  # price_id [FK]
+  available_takeout
+  is_combination_plate
+}
+
+entity "combination_menus" {
+  # parent_menu_id [FK]
+  # child_menu_id [FK]
+  --
+  quantity
+}
+
+entity "prices" {
+  + id [PK]
+  --
+  value
+}
+
+entity "customers" {
+  + id [PK]
+  --
+  firstname
+  lastname
+  phone_number
+}
+
+entity "orders" {
+  + id [PK]
+  # customers_id [FK]
+  --
+  total_price
+  ordered_at
+}
+
+entity "order_details" {
+  # order_id [FK]
+  --
+  # menu_id [FK]
+  quantity
+  is_wasabi_free
+  is_large
+}
+
+entity "campaign" {
+  + id [PK]
+  --
+  value
+  started_at
+  ended_at
+}
+
+entity "campaign_details" {
+  # campaign_id [FK]
+  # menu_id [FK]
+  --
+  discount_price
+}
+
+customers ..o{ orders
+orders --|{ order_details
+order_details }o-l-|| menus 
+menus }|-l-|| prices
+campaign ..|{ campaign_details
+menus .l.o| campaign_details
+orders .l.o{ campaign
+menus }.d.o{ combination_menus
+@enduml
