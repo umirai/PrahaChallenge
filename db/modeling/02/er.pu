@@ -1,0 +1,65 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+entity "users" {
+  + id [PK]
+  --
+  name
+  email
+  password
+}
+
+entity "workspaces" {
+  + id [PK]
+  --
+  value
+}
+
+entity "channels" {
+  + id [PK]
+  # workspaces_id [FK]
+  --
+  value
+}
+
+entity "messages" {
+  + id [PK]
+  # channel_id [FK]
+  # user_id [FK]
+  # mention_to_user_id [FK]
+  --
+  sended_at
+  value
+}
+
+entity "thread_relationships" {
+  + id [PK]
+  # parent_message_id [FK]
+  # child_message_id [FK]
+  --
+}
+
+entity "channel_attendees" {
+  + id [PK]
+  # channel_id [FK]
+  # user_id [FK]
+  --
+}
+
+entity "workspace_attendees" {
+  + id [PK]
+  # workspace_id [FK]
+  # user_id [FK]
+  --
+}
+
+workspaces ||-d-|{ channels
+channels ||-d-|{ messages
+messages }-d-o{ thread_relationships
+workspaces }o.l.|{ workspace_attendees
+channels }o.l.|{ channel_attendees
+users }o.r.|{ workspace_attendees
+users }o..|{ channel_attendees
+@enduml
