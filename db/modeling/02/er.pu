@@ -62,4 +62,5 @@ workspaces }o.l.|{ workspace_attendees
 channels }o.l.|{ channel_attendees
 users }o.r.|{ workspace_attendees
 users }o..|{ channel_attendees
+users }|--o{ messages
 @enduml
