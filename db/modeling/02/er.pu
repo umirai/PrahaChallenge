@@ -58,9 +58,9 @@ entity "workspace_attendees" {
 workspaces ||-d-|{ channels
 channels ||-d-|{ messages
 messages }-d-o{ thread_relationships
-workspaces }o.l.|{ workspace_attendees
-channels }o.l.|{ channel_attendees
-users }o.r.|{ workspace_attendees
-users }o..|{ channel_attendees
-users }|--o{ messages
+workspaces ||-l-|{ workspace_attendees
+channels ||-l-|{ channel_attendees
+users ||-r-|{ workspace_attendees
+users ||--|{ channel_attendees
+users ||--o{ messages
 @enduml
