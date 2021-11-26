@@ -15,6 +15,7 @@ entity "documents" {
 ' ディレクトリマスタ
 entity "directories" {
   + id [PK]
+  # created_user_id [FK]
   --
   dir_name   /'ディレクトリ名'/
   created_at /'作成日'/
@@ -32,15 +33,16 @@ entity "users" {
 
 ' ディレクトリ構造
 entity "dir_structures" {
-  # parent_dir_id [FK] /'親ディレクトリID'/
-  # child_dir_id [FK]  /'子ディレクトリID'/
+  # dir_id [FK] 　　　       /'ディレクトリID'/
+  # descendant_dir_id [FK]  /'子孫ディレクトリID'/
   --
+  depth                     /'自身から見た階層の深さ'/
 }
 
 ' ディレクトリ内のドキュメント
 entity "dir_child_docs" {
-  # parent_dir_id [FK] /'親ディレクトリID'/
-  # doc_id [FK]        /'ドキュメントID'/
+  # dir_id [FK] /'ディレクトリID'/
+  # doc_id [FK] /'ドキュメントID'/
   --
 }
 
@@ -57,6 +59,7 @@ entity "doc_contents" {
 
 directories }-r-o{ dir_structures
 directories ||-d-|{ dir_child_docs
+directories }o--|| users
 dir_child_docs ||-d-|| documents
 documents ||-d-o{ doc_contents
 documents }o.r.|| users
