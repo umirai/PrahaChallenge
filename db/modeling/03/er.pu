@@ -1,0 +1,67 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+' ドキュメントマスタ
+entity "documents" {
+  + id [PK]
+  # created_user_id [FK]
+  --
+  doc_title  /'ドキュメントのタイトル'/
+  created_at /'作成日'/
+}
+
+' ディレクトリマスタ
+entity "directories" {
+  + id [PK]
+  # created_user_id [FK]
+  --
+  dir_name   /'ディレクトリ名'/
+  created_at /'作成日'/
+  updated_at /'更新日'/ 
+}
+
+' ユーザーマスタ
+entity "users" {
+  + id [PK]
+  --
+  name
+  email
+  password
+}
+
+' ディレクトリ構造
+entity "dir_structures" {
+  # dir_id [FK] 　　　       /'ディレクトリID'/
+  # descendant_dir_id [FK]  /'子孫ディレクトリID'/
+  --
+  depth                     /'自身から見た階層の深さ'/
+}
+
+' ディレクトリ内のドキュメント
+entity "dir_child_docs" {
+  # dir_id [FK] /'ディレクトリID'/
+  # doc_id [FK] /'ドキュメントID'/
+  --
+}
+
+' ドキュメント内容
+entity "doc_contents" {
+  # doc_id [FK]
+  # created_user_id [FK]
+  --
+  doc_line   /'行数'/
+  content    /'内容'/
+  created_at /'作成日'/
+} 
+
+
+directories }-r-o{ dir_structures
+directories ||-d-|{ dir_child_docs
+directories }o--|| users
+dir_child_docs ||-d-|| documents
+documents ||-d-o{ doc_contents
+documents }o.r.|| users
+users ||--o{ doc_contents
+@enduml
