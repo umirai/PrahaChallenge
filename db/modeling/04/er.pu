@@ -8,6 +8,8 @@ skinparam linetype ortho
 entity "tasks" {
   + id [PK]
   --
+  # created_by [FK] /'作成者'/
+  task       /'タスクタイトル'/
   comment    /'タスクを振るときのコメント'/
   is_done    /'完了フラグ（0で未完了、1で全員完了）：非正規化のため、task_assigned_users.is_doneを参照してもOK'/
   created_at /'タスク作成日'/
@@ -21,6 +23,14 @@ entity "task_assigned_users" {
   --
   is_done /'完了フラグ（0で未完了、1で完了）'/
   done_at /'タスク完了日'/
+}
+
+entity "users" {
+  + id [PK]
+  --
+  name
+  email
+  password
 }
 
 
@@ -48,7 +58,7 @@ entity "repeat_setting" {
 entity "repeat_units" {
   + id [PK]
   --
-  + value /'hour, daily, weekly, monthy, yearlyの４種類'/
+  + value /'hour, daily, weekly, monthy, yearlyの5種類'/
 }
 
 
@@ -82,6 +92,8 @@ entity "option_numeric" {
 
 tasks ||-r-|{ task_assigned_users
 tasks ||--|| repeat_setting
+tasks }o-u-|| users
+users ||--o{ task_assigned_users
 repeat_setting ||-r-|| repeat_units
 repeat_setting ||--o{ option_pattern
 repeat_setting ||--o{ option_numeric
