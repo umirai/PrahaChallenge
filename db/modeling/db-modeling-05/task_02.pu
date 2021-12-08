@@ -1,0 +1,39 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+
+' 最新記事マスタ
+' 更新された記事がここに保存される
+entity documents {
+  + id [PK]
+  --
+  # user_id [FK]
+  title
+  content
+  created_at
+}
+
+' 履歴マスタ
+entity document_histories {
+  + id [PK]
+  # document_id [FK]
+  --
+  content
+  created_at
+}
+
+entity users {
+  # id [PK]
+  --
+  name
+  email
+  password
+}
+
+users ||-r-o{ documents
+documents ||--o{ document_histories
+
+
+@enduml

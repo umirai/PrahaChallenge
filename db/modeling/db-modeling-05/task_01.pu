@@ -1,0 +1,42 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+
+' 記事マスタ
+' created_at が作成日の役割を果たし、記事内容は全て別テーブルに切り出して保存する
+entity documents {
+  + id [PK]
+  --
+  # user_id [FK]
+  created_at
+}
+
+' 記事内容マスタ
+' 全履歴も兼ねるテーブル
+' created_at は作成日であり、アプリケーション側では更新日になるイメージ
+' is_active フラグが有効かされている内容が反映される。バージョン切り替えの際にはこのフラグをスイッチする。
+entity document_contents {
+  + id [PK]
+  # document_id [FK]
+  --
+  title
+  content
+  created_at
+  is_active
+}
+
+entity users {
+  # id [PK]
+  --
+  name
+  email
+  password
+}
+
+users ||-r-o{ documents
+documents ||--o{ document_contents
+
+
+@enduml
