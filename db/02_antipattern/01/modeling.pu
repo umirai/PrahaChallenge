@@ -1,0 +1,28 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+entity Posts {
+  + post_id [PK]
+  --
+  post
+}
+
+entity Tagging_to_posts {
+  # post_id [FK]
+  # tag_id [FK]
+  --
+}
+
+entity Tags {
+  + tag_id [PK]
+  --
+  tag
+}
+
+Posts ||--o{ Tagging_to_posts
+Tagging_to_posts }o--|| Tags
+
+
+@enduml
