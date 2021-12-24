@@ -1,0 +1,21 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+entity Messages {
+  + id [PK]
+  --
+  message
+}
+
+entity Message_relationships {
+  # parent_message_id [FK]
+  # child_message_id [FK]
+  --
+  depth
+}
+
+Messages ||--o{ Message_relationships
+
+@enduml
