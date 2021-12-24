@@ -1,0 +1,42 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+entity Customers {
+  + id [PK]
+  --
+  name
+  phone_number
+  email
+}
+
+entity Call_logs {
+  + id [PK]
+  --
+  # customer_id [FK]
+  note
+  called_at
+}
+
+entity Negotiation_logs {
+  + id [PK]
+  --
+  # customer_id [FK]
+  signed
+  met_at
+}
+
+entity Contracts {
+  + id [PK]
+  --
+  # customer_id [FK]
+  signed_at
+  cancelled_at
+}
+
+Customers ||--o{ Call_logs
+Customers ||--o{ Negotiation_logs
+Customers ||--o{ Contracts
+
+@enduml
