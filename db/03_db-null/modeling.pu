@@ -1,0 +1,28 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+entity Issues {
+  + id [PK]
+  --
+  issue_text
+}
+
+entity Users {
+  + id [PK]
+  --
+  name
+  email
+}
+
+entity Users_assigned_issue {
+  # issue_id [FK]
+  # user_id[FK]
+  --
+}
+
+Issues ||--o{ Users_assigned_issue
+Users ||--o{ Users_assigned_issue
+
+@enduml
