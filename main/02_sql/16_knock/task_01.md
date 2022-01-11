@@ -125,7 +125,7 @@ ORDER BY C.Country ASC;
 
 ```sql
 -- カラム追加
-ALTER TABLE Employees ADD Junior Boolean DEFAULT false;
+ALTER TABLE Employees ADD Junior Boolean DEFAULT false NOT NULL;
 
 -- 更新
 UPDATE Employees SET Junior = 1 WHERE BirthDate > '1960-01-01';
@@ -149,7 +149,7 @@ UPDATE Employees SET Junior = 1 WHERE BirthDate > '1960-01-01';
 
 ```sql
 -- カラム追加
-ALTER TABLE Shippers ADD LongRelation Boolean DEFAULT false;
+ALTER TABLE Shippers ADD LongRelation Boolean DEFAULT false NOT NULL;
 
 -- 過去70回以上Orderに関わったShipperを特定
 SELECT
