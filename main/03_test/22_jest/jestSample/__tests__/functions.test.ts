@@ -1,5 +1,6 @@
 // functions
 import { sumOfArray } from "../functions";
+import { asyncSumOfArray } from "../functions";
 
 // sumOfArray
 describe("sumOfArray", (): void => {
@@ -29,6 +30,25 @@ describe("sumOfArray", (): void => {
     it("empty", (): void => {
       const arr: number[] = [];
       expect((): number => sumOfArray(arr)).toThrow();
+    });
+  });
+});
+
+// asyncSumOfArray
+describe("asyncSumOfArray", (): void => {
+  describe("正常系", (): void => {
+    it("default", async (): Promise<void> => {
+      const arr: number[] = [1, 2, 3];
+      return await expect(asyncSumOfArray(arr)).resolves.toBe(6);
+    });
+  });
+
+  describe("異常系", (): void => {
+    it("empty", async (): Promise<void> => {
+      const arr: number[] = [];
+      return await expect(
+        (): Promise<number> => asyncSumOfArray(arr)
+      ).rejects.toThrow();
     });
   });
 });
