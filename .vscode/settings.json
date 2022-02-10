@@ -1,0 +1,3 @@
+{
+  "eslint.workingDirectories": ["./main/03_test/22_jest/jestSample"]
+}
