@@ -1,6 +1,13 @@
 // functions
 import { sumOfArray } from "../functions";
 import { asyncSumOfArray } from "../functions";
+import { asyncSumOfArraySometimesZero } from "../functions";
+import * as DatabaseMockService from "../util";
+
+// services
+import { DatabaseMock } from "../util";
+
+// --------------------------------------------------
 
 // sumOfArray
 describe("sumOfArray", (): void => {
@@ -49,6 +56,29 @@ describe("asyncSumOfArray", (): void => {
       return await expect(
         (): Promise<number> => asyncSumOfArray(arr)
       ).rejects.toThrow();
+    });
+  });
+});
+
+// asyncSumOfArraySometimesZero
+describe("asyncSumOfArraySometimesZero", (): void => {
+  describe("正常系", (): void => {
+    it("default", async (): Promise<void> => {
+      const arr: number[] = [1, 2, 3];
+      const database = new DatabaseMock();
+      const spyGetRandomInt = jest.spyOn(DatabaseMockService, "getRandomInt");
+      spyGetRandomInt.mockReturnValue(3);
+      const res = await asyncSumOfArraySometimesZero(arr, database);
+      expect(res).toBe(6);
+    });
+  });
+
+  describe("異常系", (): void => {
+    it("default", async (): Promise<void> => {
+      const arr: number[] = [];
+      const database = new DatabaseMock();
+      const res = await asyncSumOfArraySometimesZero(arr, database);
+      expect(res).toBe(0);
     });
   });
 });
