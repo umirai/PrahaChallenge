@@ -44,7 +44,7 @@ describe("sumOfArray", (): void => {
   describe("異常系", (): void => {
     it("empty", (): void => {
       const arr: number[] = [];
-      expect((): number => sumOfArray(arr)).toThrow();
+      expect(sumOfArray(arr)).toBe(0);
     });
   });
 });
@@ -61,9 +61,7 @@ describe("asyncSumOfArray", (): void => {
   describe("異常系", (): void => {
     it("empty", async (): Promise<void> => {
       const arr: number[] = [];
-      return await expect(
-        (): Promise<number> => asyncSumOfArray(arr)
-      ).rejects.toThrow();
+      return await expect(asyncSumOfArray(arr)).resolves.toBe(0);
     });
   });
 });
@@ -85,6 +83,8 @@ describe("asyncSumOfArraySometimesZero", (): void => {
     it("default", async (): Promise<void> => {
       const arr: number[] = [];
       const database = new DatabaseMock();
+      const spyGetRandomInt = jest.spyOn(DatabaseMockService, "getRandomInt");
+      spyGetRandomInt.mockReturnValue(3);
       const res = await asyncSumOfArraySometimesZero(arr, database);
       expect(res).toBe(0);
     });
