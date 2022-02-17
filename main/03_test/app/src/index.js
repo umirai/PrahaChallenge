@@ -7,7 +7,11 @@ import { Game } from './components/Game';
 
 // ========================================
 
+const history = [{
+  squares: Array(9).fill(null),
+}];
+
 ReactDOM.render(
-  <Game />,
+  <Game history={history} />,
   document.getElementById('root')
 );
