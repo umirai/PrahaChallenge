@@ -57,10 +57,12 @@ export class Game extends React.Component {
     })
 
     let status;
+    let hasSpace;
     if (winner) {
       status = 'Winner: ' + winner;
     } else {
-      status = '次のプレイヤー: ' + (this.state.xIsNext ? 'X' : 'O');
+      hasSpace = current.squares.includes(null);
+      status = (hasSpace) ? '次のプレイヤー: ' + (this.state.xIsNext ? 'X' : 'O') : 'Draw!';
     }
 
     return (
