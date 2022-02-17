@@ -1,5 +1,5 @@
-describe('test', () => {
-  it('test', () => {
+describe('Game', () => {
+  it('winner X', () => {
     cy.visit('localhost:3000');
     cy.get('[data-square=square_0]').click();
     cy.get('[data-square=square_3]').click();
