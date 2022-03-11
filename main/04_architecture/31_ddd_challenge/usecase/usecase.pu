@@ -1,0 +1,41 @@
+@startuml usecase
+
+' ------------------------------ 設定
+left to right direction
+skinparam monochrome true
+skinparam shadowing false
+
+' ------------------------------ アクター
+:参加者: as user
+:管理者: as admin
+
+' ------------------------------ ユースケース
+package 課題進捗 {
+  (課題ステータス更新)
+}
+
+package 課題 {
+  (課題一覧)
+  (課題編集)
+}
+
+package 参加者 {
+  (参加者一覧)
+  (在籍ステータス変更)
+  (ペア変更)
+  (チーム変更)
+}
+
+' relationship -------------------------
+user -- 課題一覧
+user -- 課題ステータス更新
+user -- 参加者一覧
+
+課題一覧 -- admin
+課題編集 -- admin
+参加者一覧 -- admin
+在籍ステータス変更 -- admin
+ペア変更 -- admin
+チーム変更 -- admin
+
+@enduml
