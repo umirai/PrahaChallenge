@@ -75,7 +75,7 @@ entity user_belongs_pair {
   --
 }
 
-entity user_task_status {
+entity user_task_progress {
   # user_id
   # task_id
   # task_status_id
@@ -90,9 +90,9 @@ users ||-up-|| user_belongs_pair
 pairs ||--o{ user_belongs_pair
 
 
-users ||-left-o{ user_task_status
+users ||-left-o{ user_task_progress
 tasks }|-down-|| task_categories
-tasks }|-right-|| user_task_status
-task_status ||-up-o{ user_task_status
+tasks }|-right-|| user_task_progress
+task_status ||-up-o{ user_task_progress
 
 @enduml
