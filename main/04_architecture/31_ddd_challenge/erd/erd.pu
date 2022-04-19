@@ -34,6 +34,13 @@ entity teams {
   team_name
 }
 
+entity affiliations {
+  + id
+  --
+  # team_id
+  # pair_id
+}
+
 entity admins {
   + id
   --
@@ -63,16 +70,9 @@ entity task_categories {
 }
 
 ' ------------------------------ 中間テーブル
-entity user_belongs_team {
+entity user_affiliation {
   # user_id
-  # team_id
-  --
-}
-
-entity user_belongs_pair {
-  # user_id
-  # pair_id
-  --
+  # affiliation_id
 }
 
 entity user_task_progress {
@@ -84,15 +84,15 @@ entity user_task_progress {
 
 ' ------------------------------ リレーション
 users }|--|| user_status
-users ||-up-|| user_belongs_team
-teams ||--o{ user_belongs_team
-users ||-up-|| user_belongs_pair
-pairs ||--o{ user_belongs_pair
+teams ||--|{ affiliations
+pairs ||--|| affiliations
+users ||--|| user_affiliation
+affiliations ||--|{ user_affiliation
 
 
-users ||-left-o{ user_task_progress
-tasks }|-down-|| task_categories
-tasks }|-right-|| user_task_progress
-task_status ||-up-o{ user_task_progress
+users ||--o{ user_task_progress
+tasks }|--|| task_categories
+tasks }|--|| user_task_progress
+task_status ||--o{ user_task_progress
 
 @enduml
