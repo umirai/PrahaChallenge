@@ -9,7 +9,9 @@
 
 ## 自身のプロジェクトの任意コンポーネントを「Container」と「Presentational」に分割してみる
 
-- [実装後のリポジトリ（GitHub: hello-nextjs）](https://github.com/umirai/hello-nextjs)
+- [実装結果（CodeSandobox）](https://codesandbox.io/s/presentational-container-sample-gh5m4y)
+
+※ リファクタリングではなく、ゼロイチで簡素なサンプル作っています・・・。
 
 ## その他コンポーネントを「controlled」と「uncontrolled」に区別するメリット・デメリット
 
