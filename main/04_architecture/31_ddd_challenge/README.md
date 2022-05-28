@@ -1,3 +1,3 @@
 # LINK
 
-- [実装後のリポジトリ（GitHub: nest-api）](https://github.com/umirai/nest-api)
+- [実装後のリポジトリ（GitHub: ddd-challenge）](https://github.com/umirai/ddd-challenge)
