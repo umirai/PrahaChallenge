@@ -6,7 +6,7 @@
 
 ## SSR したファイル、SSG したファイルのビルド後の差分検証
 
-### ssr:
+### ssg:
 
 - 生成されたファイル
   - ssg.html / ssg.js / ssg.js.nft.json / ssg.json
@@ -19,7 +19,7 @@
   }
   ```
 
-### ssg:
+### ssr:
 
 - 生成されたファイル
   - ssr.js / ssr.js.ntf.json
