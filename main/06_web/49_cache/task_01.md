@@ -76,20 +76,31 @@
 
 ## 5. キャッシュサイズ上限について
 
-### 出題意図
+### 簡易表（オフィシャルのリソースはなし）
+
+| ブラウザ | 容量上限            | 容量オーバー時の挙動                                                                |
+| -------- | ------------------- | ----------------------------------------------------------------------------------- |
+| Chrome   | ディスク容量の 80%? | 上限を下回るまで LRU アルゴリズムで使用頻度が低いものからオリジン単位で消されていく |
+| FireFox  | ディスク容量の 50%? | 上限を下回るまで LRU アルゴリズムで使用頻度が低いものからオリジン単位で消されていく |
+| Edge     | ディスク容量の 80%? | 上限を下回るまで LRU アルゴリズムで使用頻度が低いものからオリジン単位で消されていく |
+| Safari   | デフォルトで 1GB    | 200MB ずつ上限 UP、ただし 7 日間訪問がなければ自動削除                              |
+
+[参照 - web.dev](https://web.dev/i18n/ja/storage-for-the-web/)
+
+### 認識の整理
 
 - 上限の感覚値を得る
+  - 原則はデバイスのストレージ容量依存なものが多い
+    - 現代では 〜数十 GB くらいまではほとんど問題なさそう
+    - サービス開発や運営の際に、ユーザーのキャッシュ上限を気にすることもなさそう
 - 上限を超えるとどうなるか知る
+  - 基本自動削除（ほぼ気にしてくていいじゃんってくらいに最適化されてる印象）
+  - IE 系は削除せずに、書き込みを制御する
+    - サポート終了したから関係ないという幸せ
 - ブラウザ差分の認識
-
-### 簡易表
-
-| ブラウザ | 容量上限 | 容量オーバー時の挙動                                            | 備考 |
-| -------- | -------- | --------------------------------------------------------------- | ---- |
-| Chrome   | WIP      | 基本的には LRU アルゴリズムなどで最も古いものから消されていく？ | WIP  |
-| FireFox  | WIP      | WIP                                                             | WIP  |
-| Safari   | WIP      | WIP                                                             | WIP  |
-| Edge     | WIP      | WIP                                                             | WIP  |
+  - Chrome, FireFox, Edge はユーザーが上限を設定可能で上限が極端に少ない可能性もある
+  - IE は論外として Safari だけはちょっと特殊
+    - 期間指定が効かないのか？
 
 ## 6. 動的サイトのキャッシュに Exprise を使わない方がいい理由
 
@@ -112,13 +123,60 @@ HTTP/1.0 までは`Exprise`ヘッダが使用されてきたが、今は`max-age
 
 ## 7. 実運用されているサービスのキャッシュを３例以上確認する
 
-WIP
+### Zenn
 
-## Memo
+![SS1](./assets/zenn-cache.png)
 
-1. ブラウザのキャッシュ容量、良いソースを見つけられず・・・
-2. `Cache-Control`: `no-cache`は、更新の有無をリクエストごとにオリジンサーバーに問い合わせる
-   - 要件としては「最新の情報を表示したい」
-   - なら、普通のリクエストと何が違うの？何のメリットがあるの？
-   - 「不要なキャッシュが保存されている可能性があるから、それを必ず更新させたい」などのユースケース？
-     - proxy server やレガシーブラウザに把握しきれない意図せぬ挙動が紛れていることはよくある？
+#### トップページ
+
+リクエストごとにキャッシュを検証する、条件付きリクエスト、条件合致せず`304 Not Modified`レスポンス
+
+- `cache-control: max-age=0`
+- `if-none-match: "27b82-IBpzyF86RXAxBCokiZlDdamn39M"`
+- `ステータスコード: 304`
+
+#### その他
+
+- **CSS ファイル**: 1 年間共有キャッシュに保存する、不変、弱い検証を行う
+  - `cache-control: public, max-age=31536000, immutable`
+  - `etag: W/"xxxx"`
+  - `last-modified: xxxx`
+- **jpeg ファイル（ユーザーアイコンなど）**: ７日間プライベートキャッシュに保存する、不変、中間サーバーの変更を認めない
+  - `cache-control: private, no-transform, immutable, max-age=604800`
+  - `etag: W/"xxxx"`
+
+### DevelopersIO
+
+![SS2](./assets/developersio-cache.png)
+
+#### トップページ
+
+５分間キャッシュを保存する
+
+- `cache-control: max-age=300`
+
+### Twitter
+
+![SS3](./assets/twitter-cache.png)
+
+#### トップページ
+
+- `cache-control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0`
+- `pragma: no-cache`
+
+no-store が優勢になるため、MDN では無意味な例として紹介されている（[参照](（https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Cache-Control#%E6%A0%BC%E7%B4%8D%E3%82%92%E9%98%B2%E6%AD%A2)）
+⇨ YouTube のトップページでも同様の設定だったが、コンシューマーサービスでは何か有効な面があるのかな？
+
+追記: helmet.js, fastify-diablecache などのライブラリでは、以下の設定を手当たり次第に盛り込んでいるみたい
+
+```
+Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
+Pragma: no-cache
+Expires: 0
+Surrogate-Control: no-store
+```
+
+何の意味があるのかについては「よくわかんないけど、いろんな実装をサポートするため」らしい
+
+1. https://github.com/helmetjs/nocache/issues/19
+2. https://github.com/Fdawgs/fastify-disablecache/issues/131
