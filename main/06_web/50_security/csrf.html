@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSRF</title>
+</head>
+<body>
+  <form action="http://localhost/vulnerabilities/csrf" method="GET">
+    "New password:"
+    <br>
+    <input type="password" autocomplete="off" name="password_new"><br>
+    "Confirm new password:"
+    <br>
+    <input type="password" autocomplete="off" name="password_conf"><br>
+    <input type="submit" value="Change" name="Change">
+  </form>
+</body>
+</html>
