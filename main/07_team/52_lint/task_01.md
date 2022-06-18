@@ -18,7 +18,7 @@
 
 ## [airbnb の ESLint](https://www.npmjs.com/package/eslint-config-airbnb)を使ってみる
 
-[GitHub: express-server]()で適用してみる。
+[GitHub: express-server](https://github.com/umirai/express-server)で適用してみる。
 
 1. ESLint をインストール - [Commit Log](https://github.com/umirai/express-server/commit/5ce4a2e58287c6043c73417d3e918c991d904f31)
 
