@@ -197,3 +197,17 @@ PowerUserAccess ポリシーは前述の記載の通り「AWS サービスの全
   [Security Best Practices on S3 | AWS Summit Tokyo 2019](https://www.youtube.com/watch?v=G6kEtrFaEAU)
 
   [アクセスポリシーのガイドライン](https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/access-policy-alternatives-guidelines.html)
+
+## 設計方針について
+
+- **ホワイトリストパターン、ブラックリストパターンの使い分けと実例**
+  - IAM はホワイトリスト方式。メリットはできないベースで始めて権限を増やしていくのでセキュリティ面で堅牢なこと。デメリットは正確な定義が難しく設定が複雑化しやすいこと。
+  - 迷惑メール設定や SNS のブロック機能はブラックリスト方式。メリットはオープンさを保ちつつ、予想される脅威を排除できること。デメリットは想定外の攻撃に対処できないこと。
+  - PostgreSQL の Row Level Security は？
+    - ホワイトリスト方式
+    - 権限を持つクライアントにだけ取得できる Row を定義するもの
+- **AWS 上のポリシーを自動チェックするには**
+
+  AWS Config rules を設定する
+
+  [AWS Config Rules による非準拠 AWS リソースの修復](https://docs.aws.amazon.com/ja_jp/config/latest/developerguide/remediation.html#setup-autoremediation)
